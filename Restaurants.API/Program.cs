@@ -9,26 +9,26 @@ builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
 builder.Services.AddSingleton(authenticationSettings);
 builder.Services.AddAuthentication(option =>
 {
-	option.DefaultAuthenticateScheme = "Bearer";
-	option.DefaultScheme = "Bearer";
-	option.DefaultChallengeScheme = "Bearer";
+    option.DefaultAuthenticateScheme = "Bearer";
+    option.DefaultScheme = "Bearer";
+    option.DefaultChallengeScheme = "Bearer";
 }).AddJwtBearer(cfg =>
-{
-	cfg.RequireHttpsMetadata = false;
-	cfg.SaveToken = true;
-	cfg.TokenValidationParameters = new TokenValidationParameters()
-	{
-		ValidIssuer = authenticationSettings.JwtIssuer,
-		ValidAudience = authenticationSettings.JwtIssuer,
-		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey))
+    {
+        cfg.RequireHttpsMetadata = false;
+        cfg.SaveToken = true;
+        cfg.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidIssuer = authenticationSettings.JwtIssuer,
+            ValidAudience = authenticationSettings.JwtIssuer,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey))
 
-	};
-});
+        };
+    });
 builder.Services.AddAuthorization(options =>
 {
-	options.AddPolicy("HasNationality", builder => builder.RequireClaim("Nationality", "Polish", "English"));
-	options.AddPolicy("MoreThan20Years", builder => builder.AddRequirements(new MinimumAgeRequirement(20)));
-	options.AddPolicy("NumberOfCreatedRestaurants", builder => builder.AddRequirements(new MinimumRestaurantsCreatedRequirement(2)));
+    options.AddPolicy("HasNationality", builder => builder.RequireClaim("Nationality", "Polish", "English"));
+    options.AddPolicy("MoreThan20Years", builder => builder.AddRequirements(new MinimumAgeRequirement(20)));
+    options.AddPolicy("NumberOfCreatedRestaurants", builder => builder.AddRequirements(new MinimumRestaurantsCreatedRequirement(2)));
 });
 builder.Services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>();
 builder.Services.AddScoped<IAuthorizationHandler, MinimumRestaurantsCreatedRequirementHandler>();
@@ -55,12 +55,12 @@ builder.Services.AddScoped<RequestTimeMiddleware>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
-	options.AddPolicy("FrontEndClient", policyBuilder =>
-	{
-		policyBuilder.AllowAnyMethod()
-		.AllowAnyHeader()
+    options.AddPolicy("FrontEndClient", policyBuilder =>
+    {
+        policyBuilder.AllowAnyMethod()
+        .AllowAnyHeader()
         .WithOrigins(builder.Configuration["AllowedOrigins"]);
-	});
+    });
 });
 builder.Host.UseNLog();
 // Building application
@@ -72,15 +72,15 @@ var seeder = scope.ServiceProvider.GetRequiredService<RestaurantSeeder>();
 app.UseResponseCaching();
 app.UseStaticFiles(new StaticFileOptions
 {
-	FileProvider = new PhysicalFileProvider(
-		   Path.Combine(builder.Environment.ContentRootPath, "wwwroot/Files/Public")),
-	RequestPath = "/wwwroot/Files/Public"
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(builder.Environment.ContentRootPath, "wwwroot/Files/Public")),
+    RequestPath = "/wwwroot/Files/Public"
 });
 app.UseCors("FrontEndClient");
 seeder.SeedRolesAndRestaurants();
 if (app.Environment.IsDevelopment())
 {
-	app.UseDeveloperExceptionPage();
+    app.UseDeveloperExceptionPage();
 }
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseMiddleware<RequestTimeMiddleware>();
@@ -89,13 +89,13 @@ app.UseHttpsRedirection();
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
-	options.SwaggerEndpoint("/swagger/v1/swagger.json", "API Restaurants");
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "API Restaurants");
 });
 app.UseRouting();
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
-	endpoints.MapControllers();
+    endpoints.MapControllers();
 });
 
 // Running application

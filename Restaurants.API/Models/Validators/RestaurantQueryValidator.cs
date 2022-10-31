@@ -6,8 +6,7 @@
         private string[] allowedSortByColumnNames = new[] { nameof(Restaurant.Name), nameof(Restaurant.Description), nameof(Restaurant.Category), };
         public RestaurantQueryValidator(RestaurantDbContext dbContext)
         {
-            RuleFor(f => f.SearchPhrase)
-                .NotEmpty();    
+            RuleFor(f => f.SearchPhrase);  
 
 
             RuleFor(f => f.PageSize)

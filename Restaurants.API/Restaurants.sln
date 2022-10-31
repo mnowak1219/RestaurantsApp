@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API_Restaurants", "API_Restaurants.csproj", "{8F90EA05-7568-4C0E-B70D-E5AF3804E87B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurants", "Restaurants.csproj", "{8F90EA05-7568-4C0E-B70D-E5AF3804E87B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurants.Tests", "..\Restaurants.Tests\Restaurants.Tests.csproj", "{5F57B21D-9D45-47AD-90CC-EC194536D7F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurants.Tests", "..\Restaurants.Tests\Restaurants.Tests.csproj", "{5F57B21D-9D45-47AD-90CC-EC194536D7F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

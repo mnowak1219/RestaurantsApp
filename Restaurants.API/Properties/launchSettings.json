@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "API_Restaurants": {
+    "Restaurants": {
       "commandName": "Project",
       "launchUrl": "restaurant",
       "environmentVariables": {
