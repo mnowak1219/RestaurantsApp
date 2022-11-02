@@ -11,6 +11,7 @@ namespace Restaurants.Tests
             //Arrange
             var factory = new WebApplicationFactory<Program>();
             var httpClient = factory.CreateClient();
+            //httpClient.BaseAddress = new Uri("https://localhost:5001/");
 
             //Act
             var response = await httpClient.GetAsync("/api/restaurant/query?PageSize=5&PageNumber=1");
