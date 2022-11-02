@@ -20,4 +20,19 @@
             str = char.ToUpper(str[0]) + str.Substring(1).ToLower();
         return str;
     }
+
+    public static void CreateWwwrootDirectoryStructureIfNotExists(string projectPath)
+    {
+        CreateDirectoryIfNotExists(projectPath, $"/wwwroot");
+        CreateDirectoryIfNotExists(projectPath, $"/wwwroot/Files");
+        CreateDirectoryIfNotExists(projectPath, $"/wwwroot/Files/Private");
+        CreateDirectoryIfNotExists(projectPath, $"/wwwroot/Files/Public");
+    }
+    public static void CreateDirectoryIfNotExists(string projectPath, string directoryPath)
+    {
+        if (!Directory.Exists($"{projectPath}{directoryPath}"))
+        {
+            Directory.CreateDirectory($"{projectPath}{directoryPath}");
+        }
+    }
 }

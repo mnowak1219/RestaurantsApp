@@ -2,6 +2,9 @@
 var builder = WebApplication.CreateBuilder();
 var authenticationSettings = new AuthenticationSettings();
 
+string projectPath = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent}";
+Utilities.CreateWwwrootDirectoryStructureIfNotExists(projectPath);
+
 // Binding
 builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
 
@@ -73,7 +76,7 @@ app.UseResponseCaching();
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
-           Path.Combine(builder.Environment.ContentRootPath, "wwwroot/Files/Public")),
+           Path.Combine(projectPath, "wwwroot/Files/Public")),
     RequestPath = "/wwwroot/Files/Public"
 });
 app.UseCors("FrontEndClient");
