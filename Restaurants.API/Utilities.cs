@@ -28,6 +28,12 @@
         CreateDirectoryIfNotExists(projectPath, $"/wwwroot/Files/Private");
         CreateDirectoryIfNotExists(projectPath, $"/wwwroot/Files/Public");
     }
+    public static string GetLast(this string source, int tail_length)
+    {
+        if (tail_length >= source.Length)
+            return source;
+        return source.Substring(source.Length - tail_length);
+    }
     public static void CreateDirectoryIfNotExists(string projectPath, string directoryPath)
     {
         if (!Directory.Exists($"{projectPath}{directoryPath}"))

@@ -1,14 +1,14 @@
 // Initialization
-var builder = WebApplication.CreateBuilder();
+var builder = WebApplication.CreateBuilder(args);
 var authenticationSettings = new AuthenticationSettings();
-string projectPath = "";
-if (Directory.GetCurrentDirectory().Substring(Directory.GetCurrentDirectory().Length - 6) == "net6.0")
+var projectPath = "";
+if (Directory.GetCurrentDirectory().GetLast(6) == "net6.0")
 {
-    projectPath = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent}";
+    projectPath = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent}";
 }
 else
 {
-    projectPath = $"{Directory.GetParent(Directory.GetCurrentDirectory())}";
+    projectPath = $"{Directory.GetCurrentDirectory()}";
 }
 Utilities.CreateWwwrootDirectoryStructureIfNotExists(projectPath);
 
