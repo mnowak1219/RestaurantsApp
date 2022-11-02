@@ -5,6 +5,14 @@ namespace Restaurants.Tests
 {
     public class RestaurantControllerTests
     {
+        private HttpClient _httpClient;
+
+        public RestaurantControllerTests()
+        {
+            var factory = new WebApplicationFactory<Program>();
+            _httpClient = factory.CreateClient();
+        }
+
         [Theory]
         [InlineData("PageSize=5&PageNumber=4")]
         [InlineData("PageSize=10&PageNumber=3")]
@@ -12,12 +20,9 @@ namespace Restaurants.Tests
         public async Task GetResponseFromQuery_WithQueryParameters_ReturnsOkResult(string queryParams)
         {
             //Arrange
-            var factory = new WebApplicationFactory<Program>();
-            var httpClient = factory.CreateClient();
-            //httpClient.BaseAddress = new Uri("https://localhost:5001");
 
             //Act
-            var response = await httpClient.GetAsync("/api/restaurant/query?" + queryParams);
+            var response = await _httpClient.GetAsync("/api/restaurant/query?" + queryParams);
 
             //Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
@@ -31,12 +36,11 @@ namespace Restaurants.Tests
         public async Task GetResponseFromQuery_WithQueryParameters_ReturnsBadRequest(string queryParams)
         {
             //Arrange
-            var factory = new WebApplicationFactory<Program>();
-            var httpClient = factory.CreateClient();
+
             //httpClient.BaseAddress = new Uri("https://localhost:5001");
 
             //Act
-            var response = await httpClient.GetAsync("/api/restaurant/query?" + queryParams);
+            var response = await _httpClient.GetAsync("/api/restaurant/query?" + queryParams);
 
             //Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
