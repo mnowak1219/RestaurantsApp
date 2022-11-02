@@ -1,8 +1,15 @@
 // Initialization
 var builder = WebApplication.CreateBuilder();
 var authenticationSettings = new AuthenticationSettings();
-
-string projectPath = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent}";
+string projectPath = "";
+if (Directory.GetCurrentDirectory().Substring(Directory.GetCurrentDirectory().Length - 6) == "net6.0")
+{
+    projectPath = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent}";
+}
+else
+{
+    projectPath = $"{Directory.GetParent(Directory.GetCurrentDirectory())}";
+}
 Utilities.CreateWwwrootDirectoryStructureIfNotExists(projectPath);
 
 // Binding
