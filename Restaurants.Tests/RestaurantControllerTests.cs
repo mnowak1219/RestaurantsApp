@@ -3,13 +3,12 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Restaurants.Tests
 {
-    public class RestaurantControllerTests
+    public class RestaurantControllerTests : IClassFixture<WebApplicationFactory<Program>>
     {
         private HttpClient _httpClient;
 
-        public RestaurantControllerTests()
+        public RestaurantControllerTests(WebApplicationFactory<Program> factory)
         {
-            var factory = new WebApplicationFactory<Program>();
             _httpClient = factory.CreateClient();
         }
 
@@ -36,8 +35,6 @@ namespace Restaurants.Tests
         public async Task GetResponseFromQuery_WithQueryParameters_ReturnsBadRequest(string queryParams)
         {
             //Arrange
-
-            //httpClient.BaseAddress = new Uri("https://localhost:5001");
 
             //Act
             var response = await _httpClient.GetAsync("/api/restaurant/query?" + queryParams);

@@ -110,3 +110,6 @@ app.UseEndpoints(endpoints =>
 
 // Running application
 app.Run();
+
+// Making Program visible to WebApplicationFactory<T> and for shared context between tests
+public partial class Program { }
