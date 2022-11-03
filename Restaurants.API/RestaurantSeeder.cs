@@ -10,12 +10,14 @@
     {
         if (_dbContext.Database.CanConnect())
         {
-            var pendingMigrations = _dbContext.Database.GetPendingMigrations();
-            if (pendingMigrations != null && pendingMigrations.Any())
+            if (_dbContext.Database.IsRelational())
             {
-                _dbContext.Database.Migrate();
+                var pendingMigrations = _dbContext.Database.GetPendingMigrations();
+                if (pendingMigrations != null && pendingMigrations.Any())
+                {
+                    _dbContext.Database.Migrate();
+                }
             }
-
             if (!_dbContext.Roles.Any())
             {
                 _dbContext.Roles.AddRange(GetRoles());
@@ -139,7 +141,7 @@
             .RuleFor(r => r.ContactEmail, f => f.Internet.Email())
             .RuleFor(r => r.ContactNumber, f => f.Phone.PhoneNumber("###-###-###"))
             .RuleFor(r => r.CreatedById, f => f.Random.ArrayElement(new[] { 1, 2 }))
-            .RuleFor(r => r.AddressId, f => f.IndexFaker+1);
+            .RuleFor(r => r.AddressId, f => f.IndexFaker + 1);
 
         var restaurants = restaurantGenerator.Generate(500);
 
