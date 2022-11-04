@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Restaurants.Tests
+namespace Restaurants.Tests.Filters
 {
     public class FakeUserFilter : IAsyncActionFilter
     {

@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Restaurants.Tests
+namespace Restaurants.Tests.Fakes
 {
     public class FakePolicyEvaluator : IPolicyEvaluator
     {
