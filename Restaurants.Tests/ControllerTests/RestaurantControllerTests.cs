@@ -4,13 +4,11 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using Restaurants.Tests.Fakes;
 using Restaurants.Tests.Filters;
 using Restaurants.Tests.Helpers;
-using System.Text;
 
-namespace Restaurants.Tests
+namespace Restaurants.Tests.ControllerTests
 {
     public class RestaurantControllerTests : IClassFixture<WebApplicationFactory<Program>>
     {
@@ -36,7 +34,7 @@ namespace Restaurants.Tests
                         var dbContextOptions = services.SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<RestaurantDbContext>));
                         services.Remove(dbContextOptions);
 
-                        services.AddDbContext<RestaurantDbContext>(options => options.UseInMemoryDatabase("RestaurantDb"));
+                        services.AddDbContext<RestaurantDbContext>(options => options.UseInMemoryDatabase("RestaurantDb_ForRestaurantController"));
                         services.AddSingleton<IPolicyEvaluator, FakePolicyEvaluator>();
                         services.AddMvc(option => option.Filters.Add(new FakeUserFilter()));
                     });
@@ -96,17 +94,6 @@ namespace Restaurants.Tests
                     ContactEmail = "testc@mail.pl",
                 },
             };
-            yield return new object[]
-            {
-                new CreateRestaurantDto()
-                {
-                    Name = "Test restaurant name",
-                    ContactNumber = "123123123",
-                    City = "Test city",
-                    Street = "Test street name",
-                    PostalCode = "12-123",
-                },
-            };
 
         }
         [Theory]
@@ -140,15 +127,6 @@ namespace Restaurants.Tests
                 new CreateRestaurantDto()
                 {
                     Name = "Test restaurant name",
-                    City = "Test the longest city name in the Solar System and the Galaxy",
-                    Street = "Test street"
-                },
-            };
-            yield return new object[]
-            {
-                new CreateRestaurantDto()
-                {
-                    Name = "Test restaurant name",
                     City = "Test city",
                     Street = "Test the longest street name in the Solar System and the Galaxy"
                 },
@@ -166,14 +144,6 @@ namespace Restaurants.Tests
                     Street = "Test street name"
                 },
             };
-            yield return new object[]
-            {
-                new CreateRestaurantDto()
-                {
-                    Name = "Test restaurant name",
-                    Street = "Test street"
-                },
-            };
         }
         [Theory]
         [MemberData(nameof(GetRestaurantInvalidModels))]
@@ -189,13 +159,11 @@ namespace Restaurants.Tests
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
         }
 
-        [Theory]
-        [InlineData(766)]
-        [InlineData(994)]
-        [InlineData(655)]
-        public async Task DeleteRestaurant_ForNonExistingRestaurant_ReturnsNotFound(int id)
+        [Fact]
+        public async Task DeleteRestaurant_ForNonExistingRestaurant_ReturnsNotFound()
         {
             //Arrange
+            var id = 665;
 
             //Act
             var response = await _httpClient.DeleteAsync($"api/restaurant/{id}");
@@ -203,31 +171,16 @@ namespace Restaurants.Tests
             //Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
         }
-
-        public static IEnumerable<object[]> GetRestaurantsWithCorrectOwner()
-        {
-            yield return new object[]
-            {
-                new Restaurant()
-                {
-                    CreatedById = 1,
-                    Name = "Test",
-                },
-            };
-            yield return new object[]
-            {
-                new Restaurant()
-                {
-                    CreatedById = 1,
-                    Name = "Other test",
-                },
-            };
-        }
-        [Theory]
-        [MemberData(nameof(GetRestaurantsWithCorrectOwner))]
-        public async Task DeleteRestaurant_ForRestaurantOwner_ReturnsNoContent(Restaurant restaurant)
+            
+        [Fact]
+        public async Task DeleteRestaurant_ForRestaurantOwner_ReturnsNoContent()
         {
             //Arrange
+            var restaurant = new Restaurant()
+            {
+                CreatedById = 1,
+                Name = "Best Onion Rings",
+            };
             SeedRestaurant(restaurant);
 
             //Act
@@ -237,30 +190,15 @@ namespace Restaurants.Tests
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
         }
 
-        public static IEnumerable<object[]> GetRestaurantsWithWrongOwner()
-        {
-            yield return new object[]
-            {
-                new Restaurant()
-                {
-                    CreatedById = 3,
-                    Name = "Nice chips",
-                },
-            };
-            yield return new object[]
-            {
-                new Restaurant()
-                {
-                    CreatedById = 8,
-                    Name = "Good Food",
-                },
-            };
-        }
-        [Theory]
-        [MemberData(nameof(GetRestaurantsWithWrongOwner))]
-        public async Task DeleteRestaurant_ForNotRestaurantOwner_ReturnsForbidden(Restaurant restaurant)
+        [Fact]
+        public async Task DeleteRestaurant_ForNotRestaurantOwner_ReturnsForbidden()
         {
             //Arrange
+            var restaurant = new Restaurant()
+            {
+                CreatedById = 3,
+                Name = "Good Food",
+            };
             SeedRestaurant(restaurant);
 
             //Act
