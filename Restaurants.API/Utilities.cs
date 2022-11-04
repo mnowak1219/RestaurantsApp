@@ -12,7 +12,9 @@
 
     public static string CapitalizeFirstWord(this string str)
     {
-        if (str.Length == 0)
+        if (str == null)
+            return null;
+        else if (str.Length == 0)
             return str;
         else if (str.Length == 1)
             str.ToUpper();
