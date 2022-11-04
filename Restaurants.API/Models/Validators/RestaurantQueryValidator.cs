@@ -4,7 +4,7 @@
     {
         private int[] allowedPageSizes = new[] { 5, 10, 15 };
         private string[] allowedSortByColumnNames = new[] { nameof(Restaurant.Name), nameof(Restaurant.Description), nameof(Restaurant.Category), };
-        public RestaurantQueryValidator(RestaurantDbContext dbContext)
+        public RestaurantQueryValidator()
         {
             RuleFor(f => f.SearchPhrase);  
 
