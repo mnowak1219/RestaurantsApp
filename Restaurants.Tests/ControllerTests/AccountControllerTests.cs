@@ -1,8 +1,10 @@
 ﻿using API_Restaurants.Entities;
 using API_Restaurants.Models;
+using API_Restaurants.Services;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using Restaurants.Tests.Helpers;
 
 namespace Restaurants.Tests.ControllerTests
@@ -10,6 +12,7 @@ namespace Restaurants.Tests.ControllerTests
     public class AccountControllerTests : IClassFixture<WebApplicationFactory<Program>>
     {
         private HttpClient _httpClient;
+        private Mock<IAccountService> _accountServiceMock = new Mock<IAccountService>();
 
         public AccountControllerTests(WebApplicationFactory<Program> factory)
         {
@@ -22,6 +25,7 @@ namespace Restaurants.Tests.ControllerTests
                         services.Remove(dbContextOptions);
 
                         services.AddDbContext<RestaurantDbContext>(options => options.UseInMemoryDatabase("RestaurantDb_ForAccountController"));
+                        services.AddSingleton(_accountServiceMock.Object);
                     });
                 }).CreateClient();
         }
@@ -41,7 +45,7 @@ namespace Restaurants.Tests.ControllerTests
             //Act
             var response = await _httpClient.PostAsync("api/account/register", httpContent);
 
-            //Arrange
+            //Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
 
@@ -59,8 +63,29 @@ namespace Restaurants.Tests.ControllerTests
             //Act
             var response = await _httpClient.PostAsync("api/account/register", httpContent);
 
-            //Arrange
+            //Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task Login_ForRegisteredUser_ReturnsOk()
+        {
+            //Arrange
+            _accountServiceMock.Setup(m => m.SGenerateJwtToken(It.IsAny<LoginUserDto>()))
+            .Returns("token jwt");
+            var loginDto = new LoginUserDto()
+            {
+                Email = "test@mail.pl",
+                Password = "Password123",
+            };
+            var httpContent = loginDto.ToJsonHttpContent();
+
+            //Act
+            var response = await _httpClient.PostAsync("api/account/login", httpContent);
+
+            //Assert
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+            response.Content.ReadAsStringAsync().Result.Should().NotBeNullOrEmpty();
         }
     }
 }
