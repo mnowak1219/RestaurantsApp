@@ -14,11 +14,21 @@ namespace Restaurants.Tests
 {
     public class RestaurantControllerTests : IClassFixture<WebApplicationFactory<Program>>
     {
+        private WebApplicationFactory<Program> _factory;
         private HttpClient _httpClient;
+        
+        private void SeedRestaurant(Restaurant restaurant)
+        {
+            var scopeFactory = _factory.Services.GetService<IServiceScopeFactory>();
+            using var scope = scopeFactory.CreateScope();
+            var _dbContext = scope.ServiceProvider.GetService<RestaurantDbContext>();
+            _dbContext.Add(restaurant);
+            _dbContext.SaveChanges();
+        }
 
         public RestaurantControllerTests(WebApplicationFactory<Program> factory)
         {
-            _httpClient = factory
+            _factory = factory
                 .WithWebHostBuilder(builder =>
                 {
                     builder.ConfigureServices(services =>
@@ -30,8 +40,8 @@ namespace Restaurants.Tests
                         services.AddSingleton<IPolicyEvaluator, FakePolicyEvaluator>();
                         services.AddMvc(option => option.Filters.Add(new FakeUserFilter()));
                     });
-                })
-                .CreateClient();
+                });
+            _httpClient = _factory.CreateClient();
         }
 
         [Theory]
@@ -177,6 +187,87 @@ namespace Restaurants.Tests
 
             //Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+        }
+
+        [Theory]
+        [InlineData(766)]
+        [InlineData(994)]
+        [InlineData(655)]
+        public async Task DeleteRestaurant_ForNonExistingRestaurant_ReturnsNotFound(int id)
+        {
+            //Arrange
+
+            //Act
+            var response = await _httpClient.DeleteAsync($"api/restaurant/{id}");
+
+            //Assert
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+        }
+
+        public static IEnumerable<object[]> GetRestaurantsWithCorrectOwner()
+        {
+            yield return new object[]
+            {
+                new Restaurant()
+                {
+                    CreatedById = 1,
+                    Name = "Test",
+                },
+            };
+            yield return new object[]
+            {
+                new Restaurant()
+                {
+                    CreatedById = 1,
+                    Name = "Other test",
+                },
+            };
+        }
+        [Theory]
+        [MemberData(nameof(GetRestaurantsWithCorrectOwner))]
+        public async Task DeleteRestaurant_ForRestaurantOwner_ReturnsNoContent(Restaurant restaurant)
+        {
+            //Arrange
+            SeedRestaurant(restaurant);
+
+            //Act
+            var response = await _httpClient.DeleteAsync($"api/restaurant/{restaurant.Id}");
+
+            //Assert
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
+        }
+
+        public static IEnumerable<object[]> GetRestaurantsWithWrongOwner()
+        {
+            yield return new object[]
+            {
+                new Restaurant()
+                {
+                    CreatedById = 3,
+                    Name = "Nice chips",
+                },
+            };
+            yield return new object[]
+            {
+                new Restaurant()
+                {
+                    CreatedById = 8,
+                    Name = "Good Food",
+                },
+            };
+        }
+        [Theory]
+        [MemberData(nameof(GetRestaurantsWithWrongOwner))]
+        public async Task DeleteRestaurant_ForNotRestaurantOwner_ReturnsForbidden(Restaurant restaurant)
+        {
+            //Arrange
+            SeedRestaurant(restaurant);
+
+            //Act
+            var response = await _httpClient.DeleteAsync($"api/restaurant/{restaurant.Id}");
+
+            //Assert
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
         }
     }
 }
