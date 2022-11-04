@@ -1,7 +1,11 @@
 using API_Restaurants.Entities;
+using API_Restaurants.Models;
 using FluentAssertions;
+using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Restaurants.Tests
 {
@@ -20,7 +24,8 @@ namespace Restaurants.Tests
                         services.Remove(dbContextOptions);
 
                         services.AddDbContext<RestaurantDbContext>(options => options.UseInMemoryDatabase("RestaurantDb"));
-
+                        services.AddSingleton<IPolicyEvaluator, FakePolicyEvaluator>();
+                        services.AddMvc(option => option.Filters.Add(new FakeUserFilter()));
                     });
                 })
                 .CreateClient();
@@ -55,6 +60,27 @@ namespace Restaurants.Tests
 
             //Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task CreateRestaurant_WithValidModel_ReturnsCreated()
+        {
+            //Arrange
+            var restaurantDto = new CreateRestaurantDto()
+            {
+                Name = "Test restaurant name",
+                City = "Test city",
+                Street = "Test street"
+            };
+            var jsonModel = JsonConvert.SerializeObject(restaurantDto);
+            var httpContent = new StringContent(jsonModel, UnicodeEncoding.UTF8, "application/json");
+
+            //Act
+            var response = await _httpClient.PostAsync("/api/restaurant", httpContent);
+
+            //Assert
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
+            response.Headers.Location.Should().NotBeNull();
         }
     }
 }

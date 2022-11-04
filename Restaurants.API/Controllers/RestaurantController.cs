@@ -39,6 +39,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult CreateRestaurant([FromBody] CreateRestaurantDto dto)
         {   
             var userId = int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
