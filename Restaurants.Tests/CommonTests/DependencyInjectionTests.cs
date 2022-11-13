@@ -2,13 +2,8 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Restaurants.Tests.ControllerTests
+namespace Restaurants.Tests.CommonTests
 {
     public class DependencyInjectionTests : IClassFixture<WebApplicationFactory<Program>>
     {
@@ -40,14 +35,13 @@ namespace Restaurants.Tests.ControllerTests
             var scope = scopeFactory.CreateScope();
 
             //Act
-            var controller = scope.ServiceProvider.GetService<AccountController>();
-
-            //Assert
-            _controllerTypes.ForEach(t =>
+            _controllerTypes.ForEach(controllerType =>
             {
-                var controller = scope.ServiceProvider.GetService(t);
+                var controller = scope.ServiceProvider.GetService(controllerType);
+
+                //Assert
                 controller.Should().NotBeNull();
             });
+        }
     }
-}
 }

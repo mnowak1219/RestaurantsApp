@@ -47,7 +47,6 @@
 
         public DishDto SGetOneRestaurantDishById(int restaurantId, int dishId)
         {
-            var restaurant = GetRestaurantById(restaurantId);
             var dish = GetRestaurantDishById(restaurantId, dishId);
             var dishDto = _mapper.Map<DishDto>(dish);
             return dishDto;
