@@ -4,6 +4,7 @@ using API_Restaurants.Models.Validators;
 using FluentValidation.TestHelper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Restaurants.Tests.ValidatorTests.Data;
 
 namespace Restaurants.Tests.ValidatorTests
 {
@@ -11,7 +12,7 @@ namespace Restaurants.Tests.ValidatorTests
     {
         private RestaurantDbContext _dbContext;
 
-        public void Seed()
+        internal void Seed()
         {
             var testUsers = new List<User>()
             {

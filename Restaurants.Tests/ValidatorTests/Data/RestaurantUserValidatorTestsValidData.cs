@@ -1,7 +1,7 @@
 ﻿using API_Restaurants.Models;
 using System.Collections;
 
-namespace Restaurants.Tests.ValidatorTests
+namespace Restaurants.Tests.ValidatorTests.Data
 {
     public class RestaurantUserValidatorTestsValidData : IEnumerable<object[]>
     {
