@@ -69,8 +69,9 @@ namespace Restaurants.Tests.ControllerTests
             _dbContext.AddRange(testDishes);
             _dbContext.SaveChanges();
         }
-        public DishControllerTests(WebApplicationFactory<Program> factory)
+        internal HttpClient CreateHttpClient(string useInMemoryDatabaseName)
         {
+            var factory = new WebApplicationFactory<Program>();
             _factory = factory
                 .WithWebHostBuilder(builder =>
                 {
@@ -79,10 +80,14 @@ namespace Restaurants.Tests.ControllerTests
                         var dbContextOptions = services.SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<RestaurantDbContext>));
                         services.Remove(dbContextOptions);
 
-                        services.AddDbContext<RestaurantDbContext>(options => options.UseInMemoryDatabase("RestaurantDb_ForDishController_1"));
+                        services.AddDbContext<RestaurantDbContext>(options => options.UseInMemoryDatabase(useInMemoryDatabaseName));
                     });
                 });
-            _httpClient = _factory.CreateClient();            
+            return _factory.CreateClient();
+        }
+        public DishControllerTests(WebApplicationFactory<Program> factory)
+        {
+            _httpClient = CreateHttpClient("RestaurantDb_ForDishController_1");            
             _dbContext = _factory.Services.GetService<IServiceScopeFactory>().CreateScope().ServiceProvider.GetService<RestaurantDbContext>();
             SeedDishes();
         }        
@@ -118,21 +123,10 @@ namespace Restaurants.Tests.ControllerTests
         public async Task GetOneRestaurantDish_WithValidModel_ReturnsOK(int restaurantId, int dishId)
         {
             //Arrange
-            var factory = new WebApplicationFactory<Program>();
-            factory = factory
-                .WithWebHostBuilder(builder =>
-                {
-                    builder.ConfigureServices(services =>
-                    {
-                        var dbContextOptions = services.SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<RestaurantDbContext>));
-                        services.Remove(dbContextOptions);
+            _httpClient = CreateHttpClient("RestaurantDb_ForDishController_2");
 
-                        services.AddDbContext<RestaurantDbContext>(options => options.UseInMemoryDatabase("RestaurantDb_ForDishController_2"));
-                    });
-                });
-            var httpClient = factory.CreateClient();
             //Act
-            var response = await httpClient.GetAsync($"/api/restaurant/{restaurantId}/dish/{dishId}");
+            var response = await _httpClient.GetAsync($"/api/restaurant/{restaurantId}/dish/{dishId}");
 
             //Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
@@ -143,22 +137,9 @@ namespace Restaurants.Tests.ControllerTests
         public async Task GetOneRestaurantDish_WithInvalidModel_ReturnsNotFound(int restaurantId, int dishId)
         {
             //Arrange
-            var factory = new WebApplicationFactory<Program>();
-            factory = factory
-                .WithWebHostBuilder(builder =>
-                {
-                    builder.ConfigureServices(services =>
-                    {
-                        var dbContextOptions = services.SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<RestaurantDbContext>));
-                        services.Remove(dbContextOptions);
-
-                        services.AddDbContext<RestaurantDbContext>(options => options.UseInMemoryDatabase("RestaurantDb_ForDishController_3"));
-                    });
-                });
-            var httpClient = factory.CreateClient();
 
             //Act
-            var response = await httpClient.GetAsync($"/api/restaurant/{restaurantId}/dish/{dishId}");
+            var response = await _httpClient.GetAsync($"/api/restaurant/{restaurantId}/dish/{dishId}");
 
             //Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
