@@ -1,8 +1,4 @@
-﻿using API_Restaurants.Models;
-using Newtonsoft.Json;
-using System.Text;
-
-namespace Restaurants.Tests.Helpers
+﻿namespace Restaurants.Tests.Helpers
 {
     public static class HttpContentHelper
     {

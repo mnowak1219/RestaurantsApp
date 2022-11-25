@@ -31,7 +31,6 @@ builder.Services.AddAuthentication(option =>
             ValidIssuer = authenticationSettings.JwtIssuer,
             ValidAudience = authenticationSettings.JwtIssuer,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey))
-
         };
     });
 builder.Services.AddAuthorization(options =>
@@ -112,4 +111,5 @@ app.UseEndpoints(endpoints =>
 app.Run();
 
 // Making Program visible to WebApplicationFactory<T> and for shared context between tests
-public partial class Program { }
+public partial class Program
+{ }

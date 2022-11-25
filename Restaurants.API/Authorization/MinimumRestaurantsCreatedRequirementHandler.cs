@@ -8,6 +8,7 @@
         {
             _logger = logger;
         }
+
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, MinimumRestaurantsCreatedRequirement requirement)
         {
             if (context.User.Claims.ToList().Count != 0)
@@ -19,7 +20,7 @@
 
                 if (userNumberOfCreatedRestaurants >= requirement.MinimumRestaurantsCreated)
                 {
-                    _logger.LogInformation("Authorization succeded.");
+                    _logger.LogInformation("Authorization succeeded.");
                     context.Succeed(requirement);
                 }
                 else

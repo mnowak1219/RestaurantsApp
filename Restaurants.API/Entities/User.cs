@@ -11,6 +11,6 @@
         public string PasswordHash { get; set; }
         public int RoleId { get; set; }
         public int NumberOfCreatedRestaurants { get; set; }
-        public virtual Role Role{ get; set; }
+        public virtual Role Role { get; set; }
     }
 }

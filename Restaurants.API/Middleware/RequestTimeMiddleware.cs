@@ -9,8 +9,9 @@
         {
             _logger = logger;
         }
+
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
-        {            
+        {
             _stopwatch.Start();
             await next.Invoke(context);
             _stopwatch.Stop();

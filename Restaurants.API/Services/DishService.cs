@@ -3,9 +3,13 @@
     public interface IDishService
     {
         List<DishDto> SGetAllRestaurantDishes(int restaurantId);
+
         DishDto SGetOneRestaurantDishById(int restaurantId, int dishId);
+
         int SCreateRestaurantDish(int restaurantId, CreateDishDto dto);
+
         void SDeleteAllRestaurantDishes(int restaurantId);
+
         void SDeleteOneRestaurantDishById(int restaurantId, int dishId);
     }
 
@@ -23,6 +27,7 @@
                 throw new NotFoundException($"Restaurant with id: {restaurantId} not found.");
             return restaurant;
         }
+
         private Dish GetRestaurantDishById(int restaurantId, int dishId)
         {
             var dish = _dbContext.Dishes.FirstOrDefault(d => d.Id == dishId);
@@ -69,6 +74,7 @@
             _dbContext.RemoveRange(restaurant.Dishes);
             _dbContext.SaveChanges();
         }
+
         public void SDeleteOneRestaurantDishById(int restaurantId, int dishId)
         {
             var restaurant = GetRestaurantById(restaurantId);

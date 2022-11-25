@@ -5,6 +5,7 @@
         ClaimsPrincipal User { get; }
         int? GetUserId { get; }
     }
+
     public class UserContextService : IUserContextService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -13,8 +14,10 @@
         {
             _httpContextAccessor = httpContextAccessor;
         }
+
         public ClaimsPrincipal User => _httpContextAccessor.HttpContext?.User;
-        public int? GetUserId => 
+
+        public int? GetUserId =>
             User is null ? null : (int?)int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
     }
 }

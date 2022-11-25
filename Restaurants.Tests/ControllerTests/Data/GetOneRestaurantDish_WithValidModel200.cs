@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Restaurants.Tests.ControllerTests.Data
+﻿namespace Restaurants.Tests.ControllerTests.Data
 {
     public class GetOneRestaurantDish_WithValidModel200 : IEnumerable<object[]>
     {
@@ -21,6 +14,7 @@ namespace Restaurants.Tests.ControllerTests.Data
             };
             return objectList.GetEnumerator();
         }
+
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

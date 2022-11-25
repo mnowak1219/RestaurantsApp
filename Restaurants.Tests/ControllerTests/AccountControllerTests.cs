@@ -1,13 +1,4 @@
-﻿using API_Restaurants.Entities;
-using API_Restaurants.Models;
-using API_Restaurants.Services;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using Moq;
-using Restaurants.Tests.Helpers;
-
-namespace Restaurants.Tests.ControllerTests
+﻿namespace Restaurants.Tests.ControllerTests
 {
     public class AccountControllerTests : IClassFixture<WebApplicationFactory<Program>>
     {

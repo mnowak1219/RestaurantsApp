@@ -3,6 +3,7 @@
     public interface IAccountService
     {
         void SRegisterUser(RegisterUserDto dto);
+
         string SGenerateJwtToken(LoginUserDto dto);
     }
 
@@ -18,6 +19,7 @@
             _passwordHasher = passwordHasher;
             _authenticationSettings = authenticationSettings;
         }
+
         public void SRegisterUser(RegisterUserDto dto)
         {
             var newUser = new User()
@@ -34,6 +36,7 @@
             _dbContext.Users.Add(newUser);
             _dbContext.SaveChanges();
         }
+
         public string SGenerateJwtToken(LoginUserDto dto)
         {
             var user = _dbContext.Users

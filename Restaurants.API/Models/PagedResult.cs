@@ -2,7 +2,7 @@
 {
     public class PagedResult<T>
     {
-        public List<T> Items{ get; set; }
+        public List<T> Items { get; set; }
         public int TotalItemsCount { get; set; }
         public int TotalPages { get; set; }
         public int ItemsFrom { get; set; }
@@ -16,9 +16,9 @@
             ItemsFrom = pageSize * (pageNumber - 1) + 1;
             ItemsTo = ItemsFrom + pageSize - 1;
             if (ItemsTo > TotalItemsCount)
-            { 
+            {
                 ItemsTo = TotalItemsCount;
             }
-        } 
+        }
     }
 }

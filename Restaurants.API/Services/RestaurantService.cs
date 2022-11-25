@@ -3,12 +3,18 @@
     public interface IRestaurantService
     {
         List<RestaurantDto> SGetAllRestaurants();
+
         PagedResult<RestaurantDto> SGetResponseFromQuery(RestaurantQuery query);
+
         RestaurantDto SGetOneRestaurantsById(int id);
+
         int SCreateRestaurant(CreateRestaurantDto dto);
+
         void SUpdateRestaurantById(UpdateRestaurantDto dto, int id);
+
         void SDeleteRestaurantById(int id);
     }
+
     public class RestaurantService : IRestaurantService
     {
         private readonly RestaurantDbContext _dbContext;
@@ -23,7 +29,7 @@
             _dbContext = dbContext;
             _mapper = mapper;
             _authorizationService = authorizationService;
-           _userContextService = userContextService;
+            _userContextService = userContextService;
         }
 
         public List<RestaurantDto> SGetAllRestaurants()
@@ -45,7 +51,7 @@
                 .Include(r => r.Address)
                 .Include(r => r.Dishes)
                 .Where(r => (query.SearchPhrase == null) || (r.Name.ToLower().Contains(query.SearchPhrase.ToLower()) || r.Description.ToLower().Contains(query.SearchPhrase.ToLower())));
-            
+
             if (!string.IsNullOrEmpty(query.SortBy))
             {
                 var columnsSelectors = new Dictionary<string, Expression<Func<Restaurant, object>>>
@@ -56,14 +62,14 @@
                 };
 
                 var selectedColumn = columnsSelectors[query.SortBy];
-                            
+
                 baseQuery = query.SortDirection == SortDirection.Ascending
                     ? baseQuery.OrderBy(selectedColumn)
                     : baseQuery.OrderByDescending(selectedColumn);
             }
 
             var restaurants = baseQuery
-                .Skip(query.PageSize*(query.PageNumber -1))
+                .Skip(query.PageSize * (query.PageNumber - 1))
                 .Take(query.PageSize)
                 .ToList();
 
@@ -91,7 +97,7 @@
         }
 
         public int SCreateRestaurant(CreateRestaurantDto dto)
-        {           
+        {
             var restaurant = _mapper.Map<Restaurant>(dto);
             restaurant.CreatedById = _userContextService.GetUserId;
 

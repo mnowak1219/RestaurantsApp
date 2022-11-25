@@ -1,7 +1,4 @@
-﻿using API_Restaurants.Models;
-using System.Collections;
-
-namespace Restaurants.Tests.ValidatorTests.Data
+﻿namespace Restaurants.Tests.ValidatorTests.Data
 {
     public class RestaurantUserValidatorTestsInvalidData : IEnumerable<object[]>
     {
@@ -43,7 +40,6 @@ namespace Restaurants.Tests.ValidatorTests.Data
                 },
             };
             return objectList.Select(o => new object[] { o }).GetEnumerator();
-
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

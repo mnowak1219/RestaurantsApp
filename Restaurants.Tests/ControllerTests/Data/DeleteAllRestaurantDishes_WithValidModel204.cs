@@ -1,12 +1,4 @@
-﻿using API_Restaurants.Models;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Restaurants.Tests.ControllerTests.Data
+﻿namespace Restaurants.Tests.ControllerTests.Data
 {
     public class DeleteAllRestaurantDishes_WithValidModel204 : IEnumerable<object[]>
     {
@@ -22,6 +14,7 @@ namespace Restaurants.Tests.ControllerTests.Data
             };
             return objectList.Select(o => new object[] { o }).GetEnumerator();
         }
+
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

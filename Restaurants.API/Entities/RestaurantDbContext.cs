@@ -2,16 +2,15 @@
 {
     public class RestaurantDbContext : DbContext
     {
-        public RestaurantDbContext(DbContextOptions<RestaurantDbContext> options) :base(options)
+        public RestaurantDbContext(DbContextOptions<RestaurantDbContext> options) : base(options)
         {
-
         }
+
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Dish> Dishes { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

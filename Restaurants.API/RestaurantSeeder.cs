@@ -1,6 +1,7 @@
 ﻿public class RestaurantSeeder
 {
     private readonly RestaurantDbContext _dbContext;
+
     public RestaurantSeeder(RestaurantDbContext dbContext)
     {
         _dbContext = dbContext;
@@ -61,6 +62,7 @@
             }
         }
     }
+
     private IEnumerable<Role> GetRoles()
     {
         var roles = new List<Role>()
@@ -80,6 +82,7 @@
         };
         return roles;
     }
+
     private IEnumerable<User> GetUsers()
     {
         var users = new List<User>()
@@ -117,6 +120,7 @@
         };
         return users;
     }
+
     private IEnumerable<Address> GetAddresses()
     {
         Randomizer.Seed = new Random(0);
@@ -129,6 +133,7 @@
 
         return addresses;
     }
+
     private IEnumerable<Restaurant> GetRestaurants()
     {
         Randomizer.Seed = new Random(0);
@@ -147,6 +152,7 @@
 
         return restaurants;
     }
+
     private IEnumerable<Dish> GetDishes()
     {
         Randomizer.Seed = new Random(0);

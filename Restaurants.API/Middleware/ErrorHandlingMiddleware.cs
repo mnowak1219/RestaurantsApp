@@ -8,7 +8,7 @@
         {
             _logger = logger;
         }
-        
+
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             try
@@ -20,7 +20,6 @@
             {
                 context.Response.StatusCode = 400;
                 await context.Response.WriteAsync(badRequestException.Message);
-
             }
             catch (ForbidException forbidException)
             {

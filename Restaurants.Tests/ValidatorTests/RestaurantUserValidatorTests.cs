@@ -1,12 +1,4 @@
-﻿using API_Restaurants.Entities;
-using API_Restaurants.Models;
-using API_Restaurants.Models.Validators;
-using FluentValidation.TestHelper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Restaurants.Tests.ValidatorTests.Data;
-
-namespace Restaurants.Tests.ValidatorTests
+﻿namespace Restaurants.Tests.ValidatorTests
 {
     public class RestaurantUserValidatorTests
     {

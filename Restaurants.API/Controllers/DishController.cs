@@ -2,7 +2,6 @@
 {
     [Route("api/restaurant/{restaurantId}/dish")]
     [ApiController]
-
     public class DishController : ControllerBase
     {
         private readonly IDishService _dishService;
@@ -27,7 +26,7 @@
         }
 
         [HttpPost]
-        public ActionResult CreateRestaurantDish([FromRoute]int restaurantId,  [FromBody]CreateDishDto dto)
+        public ActionResult CreateRestaurantDish([FromRoute] int restaurantId, [FromBody] CreateDishDto dto)
         {
             var dishId = _dishService.SCreateRestaurantDish(restaurantId, dto);
             return Created($"/api/restaurant/{restaurantId}/dish/{dishId}", null); // Ok($"Dish created succesfully.");

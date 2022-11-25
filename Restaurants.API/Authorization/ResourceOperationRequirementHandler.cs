@@ -4,7 +4,7 @@
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ResourceOperationRequirement requirement, Restaurant restaurant)
         {
-            if (requirement.ResourceOperation == ResourceOperation.Read || 
+            if (requirement.ResourceOperation == ResourceOperation.Read ||
                (requirement.ResourceOperation == ResourceOperation.Create))
             {
                 context.Succeed(requirement);

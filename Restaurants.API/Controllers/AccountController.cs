@@ -10,6 +10,7 @@
         {
             _accountService = accountService;
         }
+
         [HttpPost("register")]
         public ActionResult RegisterUser([FromBody] RegisterUserDto dto)
         {

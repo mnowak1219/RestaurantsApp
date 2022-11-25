@@ -4,17 +4,17 @@
     {
         private int[] allowedPageSizes = new[] { 5, 10, 15 };
         private string[] allowedSortByColumnNames = new[] { nameof(Restaurant.Name), nameof(Restaurant.Description), nameof(Restaurant.Category), };
+
         public RestaurantQueryValidator()
         {
-            RuleFor(f => f.SearchPhrase);  
-
+            RuleFor(f => f.SearchPhrase);
 
             RuleFor(f => f.PageSize)
                 .Custom((value, context) =>
                 {
                     if (!allowedPageSizes.Contains(value))
                     {
-                        context.AddFailure("PageSize", $"That value is inappropriated. Try with one of these: {string.Join(',', allowedPageSizes)}");
+                        context.AddFailure("PageSize", $"That value is inappropriate. Try with one of these: {string.Join(',', allowedPageSizes)}");
                     }
                 });
 

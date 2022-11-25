@@ -1,26 +1,11 @@
-﻿using API_Restaurants.Entities;
-using API_Restaurants.Models;
-using FluentAssertions;
-using Microsoft.AspNetCore.Authorization.Policy;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using Restaurants.Tests.ControllerTests.Data;
-using Restaurants.Tests.Fakes;
-using Restaurants.Tests.Filters;
-using Restaurants.Tests.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Restaurants.Tests.ControllerTests
+﻿namespace Restaurants.Tests.ControllerTests
 {
     public class DishControllerTests : IClassFixture<WebApplicationFactory<Program>>
     {
         private WebApplicationFactory<Program> _factory;
         private HttpClient _httpClient;
         private RestaurantDbContext _dbContext;
+
         internal void SeedDishes()
         {
             var testDishes = new List<Dish>()
@@ -69,6 +54,7 @@ namespace Restaurants.Tests.ControllerTests
             _dbContext.AddRange(testDishes);
             _dbContext.SaveChanges();
         }
+
         internal HttpClient CreateHttpClient(string useInMemoryDatabaseName)
         {
             var factory = new WebApplicationFactory<Program>();
@@ -85,12 +71,13 @@ namespace Restaurants.Tests.ControllerTests
                 });
             return _factory.CreateClient();
         }
+
         public DishControllerTests(WebApplicationFactory<Program> factory)
         {
-            _httpClient = CreateHttpClient("RestaurantDb_ForDishController_1");            
+            _httpClient = CreateHttpClient("RestaurantDb_ForDishController_1");
             _dbContext = _factory.Services.GetService<IServiceScopeFactory>().CreateScope().ServiceProvider.GetService<RestaurantDbContext>();
             SeedDishes();
-        }        
+        }
 
         [Theory]
         [ClassData(typeof(GetAllDishes_WithValidModel200))]
@@ -106,7 +93,7 @@ namespace Restaurants.Tests.ControllerTests
         }
 
         [Theory]
-        [ClassData(typeof(GetAllDishes_WithInvalidModel404))]        
+        [ClassData(typeof(GetAllDishes_WithInvalidModel404))]
         public async Task GetAllDishes_WithInvalidModel_ReturnsNotFound(int restaurantId)
         {
             //Arrange
@@ -119,7 +106,7 @@ namespace Restaurants.Tests.ControllerTests
         }
 
         [Theory]
-        [ClassData(typeof(GetOneRestaurantDish_WithValidModel200))]        
+        [ClassData(typeof(GetOneRestaurantDish_WithValidModel200))]
         public async Task GetOneRestaurantDish_WithValidModel_ReturnsOK(int restaurantId, int dishId)
         {
             //Arrange
@@ -131,9 +118,9 @@ namespace Restaurants.Tests.ControllerTests
             //Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
-        
+
         [Theory]
-        [ClassData(typeof(GetOneRestaurantDish_WithInvalidModel404))]       
+        [ClassData(typeof(GetOneRestaurantDish_WithInvalidModel404))]
         public async Task GetOneRestaurantDish_WithInvalidModel_ReturnsNotFound(int restaurantId, int dishId)
         {
             //Arrange

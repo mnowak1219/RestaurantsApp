@@ -7,12 +7,14 @@
         Update,
         Delete
     }
+
     public class ResourceOperationRequirement : IAuthorizationRequirement
     {
         public ResourceOperationRequirement(ResourceOperation resourceOperation)
         {
             ResourceOperation = resourceOperation;
         }
+
         public ResourceOperation ResourceOperation { get; }
     }
 }

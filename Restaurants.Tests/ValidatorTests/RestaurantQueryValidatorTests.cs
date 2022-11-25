@@ -1,9 +1,4 @@
-﻿using API_Restaurants.Entities;
-using API_Restaurants.Models;
-using API_Restaurants.Models.Validators;
-using FluentValidation.TestHelper;
-
-namespace Restaurants.Tests.ValidatorTests
+﻿namespace Restaurants.Tests.ValidatorTests
 {
     public class RestaurantQueryValidatorTests
     {
@@ -46,7 +41,7 @@ namespace Restaurants.Tests.ValidatorTests
         [MemberData(nameof(GetSampleValidData))]
         public void Validate_ForCorrectModel_ReturnsSuccess(RestaurantQuery model)
         {
-            //Arrangge
+            //Arrange
             var validator = new RestaurantQueryValidator();
 
             //Act
@@ -95,7 +90,7 @@ namespace Restaurants.Tests.ValidatorTests
         [MemberData(nameof(GetSampleInvalidData))]
         public void Validate_ForIncorrectModel_ReturnsFailure(RestaurantQuery model)
         {
-            //Arrangge
+            //Arrange
             var validator = new RestaurantQueryValidator();
 
             //Act

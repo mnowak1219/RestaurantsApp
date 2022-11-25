@@ -1,9 +1,4 @@
-﻿using API_Restaurants.Controllers;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Testing;
-
-namespace Restaurants.Tests.CommonTests
+﻿namespace Restaurants.Tests.CommonTests
 {
     public class DependencyInjectionTests : IClassFixture<WebApplicationFactory<Program>>
     {

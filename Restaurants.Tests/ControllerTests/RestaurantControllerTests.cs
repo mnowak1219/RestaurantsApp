@@ -1,20 +1,10 @@
-using API_Restaurants.Entities;
-using API_Restaurants.Models;
-using FluentAssertions;
-using Microsoft.AspNetCore.Authorization.Policy;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using Restaurants.Tests.Fakes;
-using Restaurants.Tests.Filters;
-using Restaurants.Tests.Helpers;
-
 namespace Restaurants.Tests.ControllerTests
 {
     public class RestaurantControllerTests : IClassFixture<WebApplicationFactory<Program>>
     {
         private WebApplicationFactory<Program> _factory;
         private HttpClient _httpClient;
-        
+
         private void SeedRestaurant(Restaurant restaurant)
         {
             var scopeFactory = _factory.Services.GetService<IServiceScopeFactory>();
@@ -94,8 +84,8 @@ namespace Restaurants.Tests.ControllerTests
                     ContactEmail = "testc@mail.pl",
                 },
             };
-
         }
+
         [Theory]
         [MemberData(nameof(GetRestaurantValidModels))]
         public async Task CreateRestaurant_WithValidModel_ReturnsCreated(CreateRestaurantDto restaurantDto)
@@ -145,6 +135,7 @@ namespace Restaurants.Tests.ControllerTests
                 },
             };
         }
+
         [Theory]
         [MemberData(nameof(GetRestaurantInvalidModels))]
         public async Task CreateRestaurant_WithInvalidModel_ReturnsBadRequest(CreateRestaurantDto restaurantDto)
@@ -171,7 +162,7 @@ namespace Restaurants.Tests.ControllerTests
             //Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
         }
-            
+
         [Fact]
         public async Task DeleteRestaurant_ForRestaurantOwner_ReturnsNoContent()
         {

@@ -6,7 +6,7 @@
     public class FileController : ControllerBase
     {
         [HttpGet]
-        [ResponseCache(Duration = 600, VaryByQueryKeys = new[] {"fileName"})]
+        [ResponseCache(Duration = 600, VaryByQueryKeys = new[] { "fileName" })]
         public ActionResult GetFile([FromQuery] string fileName)
         {
             var rootPath = Directory.GetCurrentDirectory();
@@ -25,14 +25,14 @@
         }
 
         [HttpPost]
-        public ActionResult UploadFile([FromForm]IFormFile file)
+        public ActionResult UploadFile([FromForm] IFormFile file)
         {
-            if(file != null && file.Length>0)
+            if (file != null && file.Length > 0)
             {
                 var fileName = file.FileName;
                 var rootPath = Directory.GetCurrentDirectory();
                 var fullPath = $"{rootPath}/wwwroot/Files/Public/{fileName}";
-                using(var stream = new FileStream(fullPath, FileMode.Create))
+                using (var stream = new FileStream(fullPath, FileMode.Create))
                 {
                     file.CopyTo(stream);
                 }

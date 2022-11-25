@@ -1,14 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authorization.Policy;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Restaurants.Tests.Fakes
+﻿namespace Restaurants.Tests.Fakes
 {
     public class FakePolicyEvaluator : IPolicyEvaluator
     {

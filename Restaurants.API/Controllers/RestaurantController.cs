@@ -2,7 +2,6 @@
 {
     [Route("api/restaurant")]
     [ApiController]
-    //[Authorize]
     public class RestaurantController : ControllerBase
     {
         private IRestaurantService _restaurantService;
@@ -11,7 +10,7 @@
         {
             _restaurantService = restaurantService;
         }
-        
+
         [HttpGet]
         [Authorize(Policy = "NumberOfCreatedRestaurants")]
         [Authorize(Policy = "HasNationality")]
@@ -41,7 +40,7 @@
         [HttpPost]
         [Authorize]
         public ActionResult CreateRestaurant([FromBody] CreateRestaurantDto dto)
-        {   
+        {
             var userId = int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
             var id = _restaurantService.SCreateRestaurant(dto);
             return Created($"/api/restaurant/{id}", null); // Ok($"Restaurant created succesfully.");
@@ -60,6 +59,5 @@
             _restaurantService.SDeleteRestaurantById(id);
             return NoContent(); // Ok($"Restaurant with {id} deleted succesfully.");
         }
-
     }
 }
