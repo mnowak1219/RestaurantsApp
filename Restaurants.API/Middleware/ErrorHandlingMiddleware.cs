@@ -13,7 +13,7 @@
         {
             try
             {
-                _logger.LogInformation($"Porgram started.");
+                _logger.LogInformation($"Program started.");
                 await next.Invoke(context);
             }
             catch (BadRequestException badRequestException)
