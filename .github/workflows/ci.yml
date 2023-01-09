@@ -22,5 +22,7 @@ jobs:
         working-directory: Restaurants.API
       - name: Build
         run: dotnet build --no-restore
+        working-directory: Restaurants.API
       - name: Test
         run: dotnet test
+        working-directory: Restaurants.API
